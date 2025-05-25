@@ -1,0 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Quiz Screen */
+#quiz-screen {
+  height: 100svh;
+  min-width: 100vw;
+}
