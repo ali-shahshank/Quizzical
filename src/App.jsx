@@ -15,11 +15,6 @@ import ResultsScreen from "./components/ResultsScreen";
 import ReviewScreen from "./components/ReviewScreen";
 import AccountManagement from "./components/AccountManagement";
 import { AuthProvider } from "./context/AuthContext";
-// Test Cases
-import TestCaseOne from "./TestCases/TestCaseOne";
-import TestCaseTwo from "./TestCases/TestCaseTwo";
-import TestCaseThree from "./TestCases/TestCaseThree";
-import TestCaseFour from "./TestCases/TestCaseFour";
 const App = () => {
   return (
     <>
@@ -35,11 +30,6 @@ const App = () => {
           <Route path="/result" element={<ResultsScreen />}></Route>
           <Route path="/review" element={<ReviewScreen />} />
           <Route path="/account" element={<AccountManagement />} />
-          {/* Test Cases */}
-          <Route path="/caseOne" element={<TestCaseOne />} />
-          <Route path="/caseTwo" element={<TestCaseTwo />} />
-          <Route path="/caseThree" element={<TestCaseThree />} />
-          <Route path="/caseFour" element={<TestCaseFour />} />
         </Routes>
       </AuthProvider>
     </>
