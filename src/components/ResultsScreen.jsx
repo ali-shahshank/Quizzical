@@ -6,14 +6,14 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const ResultsScreen = () => {
-  // Navigation
   const navigate = useNavigate();
   const { state } = useLocation();
-  // Variables
+
   const { questions = [], answeredQuestions = [], config = {} } = state || {};
-  const totalQuestions = state?.questions?.length || 10;
-  const score = state?.score || 0;
-  const percentage = Math.round((score / totalQuestions) * 100);
+  const totalQuestions = questions?.length || 0;
+  const score = Math.min(state?.score || 0, totalQuestions);
+  const percentage =
+    totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
 
   return (
     <>
@@ -28,20 +28,18 @@ const ResultsScreen = () => {
                   <h4 className="card-title p-2">Your Score</h4>
                   <ul className="list-unstyled p-2">
                     <li className="py-1">
-                      {/* <h5 className="card-text">{quizStatus}</h5> */}
-                    </li>
-                    <li className="py-1">
                       <h5 className="card-text">
                         Total <span>{`${score} / ${totalQuestions}`}</span>
+                        <span className="text-success ms-2"></span>
                       </h5>
                     </li>
+
                     <li className="py-1">
                       <p className="display-1">{percentage}%</p>
                     </li>
                     <li className="py-1">
                       <ProgressBar
                         now={percentage}
-                        // label={`${score}/${totalQuestions}`}
                         variant={
                           percentage >= 70
                             ? "success"
@@ -66,7 +64,6 @@ const ResultsScreen = () => {
                       <span className="fw-bold">Total Questions:</span>
                       <span className="mx-5 fw-bold">{totalQuestions}</span>
                     </li>
-
                     <li className="d-flex justify-content-between py-1 ">
                       <span className="fw-bold">Correct:</span>
                       <span className="mx-5 fw-bold">{score}</span>

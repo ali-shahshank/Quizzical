@@ -42,7 +42,7 @@ const QuizScreen = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Auto Submission
+  // Time Retire Auto Submission
   useEffect(() => {
     if (timeLeft === 0) {
       navigate("/result", {
@@ -58,7 +58,7 @@ const QuizScreen = () => {
         },
       });
     }
-  }, [timeLeft]); // Triggered when timeLeft hits 0
+  }, [timeLeft]);
 
   // Alert
   useEffect(() => {
@@ -76,7 +76,7 @@ const QuizScreen = () => {
       setError(null); // Reset error state on new fetch attempt
       const cacheKey = `trivia-${category}-${difficulty}`;
       const url = `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}`;
-      const maxRetries = 3;
+      const maxRetries = 5;
 
       try {
         // 1. Check cache first
@@ -127,36 +127,34 @@ const QuizScreen = () => {
         setError(err.message);
         // Provide fallback mock data if needed
         if (questions.length === 0) {
-          setQuestions([]); // Your mock questions array
+          setQuestions([]);
         }
       } finally {
         setIsLoading(false);
       }
     };
-
-    {
-      error && (
-        <Alert variant="danger">
-          {error.message}
-          {error.isRetryable && (
-            <Button
-              variant="link"
-              onClick={() => window.location.reload()}
-              className="ms-2"
-            >
-              Retry Now
-            </Button>
-          )}
-          <Button
-            variant="primary"
-            onClick={() => navigate("/")}
-            className="ms-2"
-          >
-            Change Settings
-          </Button>
-        </Alert>
-      );
-    }
+    // Error handling
+    // error && (
+    //   <Alert variant="danger">
+    //     {error.message}
+    //     {error.isRetryable && (
+    //       <Button
+    //         variant="link"
+    //         onClick={() => window.location.reload()}
+    //         className="ms-2"
+    //       >
+    //         Retry Now
+    //       </Button>
+    //     )}
+    //     <Button
+    //       variant="primary"
+    //       onClick={() => navigate("/")}
+    //       className="ms-2"
+    //     >
+    //       Change Settings
+    //     </Button>
+    //   </Alert>
+    // );
 
     fetchQuestions();
   }, [category, difficulty]);
@@ -169,6 +167,7 @@ const QuizScreen = () => {
       setShuffledAnswers(
         [...incorrect_answers, correct_answer].sort(() => Math.random() - 0.5)
       );
+      setSelectedAnswer(answeredQuestions[currentQuestionIndex]);
     }
   }, [currentQuestionIndex, questions]);
 
@@ -178,17 +177,41 @@ const QuizScreen = () => {
     return txt.value;
   };
 
+  // Handle Selected Answer
   const handleAnswerSelect = (answer) => {
+    const currentCorrectAnswer = questions[currentQuestionIndex].correct_answer;
+    const previousAnswer = answeredQuestions[currentQuestionIndex];
+
     const newAnswers = [...answeredQuestions];
     newAnswers[currentQuestionIndex] = answer;
     setAnsweredQuestions(newAnswers);
     setSelectedAnswer(answer);
 
-    if (answer === questions[currentQuestionIndex].correct_answer) {
-      setScore((prev) => prev + 1);
-    }
+    setScore((prev) => {
+      // Case 1: Changed from correct to incorrect
+      if (
+        previousAnswer === currentCorrectAnswer &&
+        answer !== currentCorrectAnswer
+      ) {
+        return prev - 1;
+      }
+      // Case 2: Changed from incorrect to correct
+      else if (
+        previousAnswer !== currentCorrectAnswer &&
+        answer === currentCorrectAnswer
+      ) {
+        return prev + 1;
+      }
+      // Case 3: New answer (no previous selection)
+      else if (previousAnswer === null && answer === currentCorrectAnswer) {
+        return prev + 1;
+      }
+      // Case 4: All other scenarios (no score change)
+      return prev;
+    });
   };
 
+  // Handle Question Advance
   const handleQuestionAdvance = () => {
     if (currentQuestionIndex < questions.length - 1) {
       // Normal question navigation
@@ -199,10 +222,10 @@ const QuizScreen = () => {
         state: {
           score,
           totalQuestions: questions.length,
-          answeredQuestions, // User's selections
-          questions, // Original questions for review
+          answeredQuestions,
+          questions,
           config: {
-            // Quiz settings
+            // Quiz Configuration Routes
             category: routeState?.category,
             difficulty: routeState?.difficulty,
           },
@@ -210,6 +233,31 @@ const QuizScreen = () => {
       });
     }
   };
+
+  if (error) {
+    return (
+      <div className="container mt-5">
+        <Alert variant="danger">
+          Error: {error}
+          <div className="mt-2">
+            <Button
+              variant="primary"
+              onClick={() => navigate("/")}
+              className="me-2"
+            >
+              Change Settings
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </Button>
+          </div>
+        </Alert>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -261,13 +309,13 @@ const QuizScreen = () => {
             {/* Alert */}
             {timeLeft <= 60 && (
               <div
-                class="alert alert-warning alert-dismissible fade show p-5 w-50 mt-4 d-flex justify-content-center align-items-center position-absolute "
+                className="alert alert-warning alert-dismissible fade show p-5 w-50 mt-4 d-flex justify-content-center align-items-center position-absolute "
                 role="alert"
               >
                 <strong>Less Than One Minute Remaining!</strong>
                 <button
                   type="button"
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="alert"
                   aria-label="Close"
                 ></button>
