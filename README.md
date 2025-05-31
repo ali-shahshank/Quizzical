@@ -35,6 +35,7 @@
 - React 19 + Vite
 - React Bootstrap
 - Bootstrap 5 + Bootstrap Icons
+- Open Trivia DB API
 - Axios (API integration)
 - Firebase Authentication
 - Firestore Database
