@@ -1,55 +1,3 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import { signOut } from "firebase/auth";
-// import { auth } from "../utils/firebase";
-// import { AuthContext } from "../context/AuthContext";
-// import { useContext } from "react";
-
-// const Nav = () => {
-//   const { currentUser } = useContext(AuthContext);
-
-//   const handleLogout = async () => {
-//     try {
-//       await signOut(auth);
-//     } catch (error) {
-//       console.error("Logout failed:", error);
-//     }
-//   };
-
-//   return (
-//     <nav className="navbar navbar-dark bg-dark navbar-expand-md p-3">
-//       <div className="container p-2">
-//         <Link to="/" className="navbar-brand">
-//           <img src="/Logo-Dark.svg" alt="" height={"40px"} />
-//         </Link>
-//         <button
-//           className="navbar-toggler"
-//           data-bs-toggle="collapse"
-//           data-bs-target="#MainNav"
-//         >
-//           <span className="navbar-toggler-icon"></span>
-//         </button>
-//         <div className="collapse navbar-collapse" id="MainNav">
-//           <ul className="navbar-nav gap-2 m-0 ms-md-auto mt-5 mt-md-0 d-flex flex-column flex-md-row  ">
-//             <li className="nav-item">
-//               <button className="btn btn-outline-light px-4 rounded-pill border-2 w-100">
-//                 Sign-Up
-//               </button>
-//             </li>
-//             <li className="nav-item">
-//               <button className="btn btn-light px-4 rounded-pill w-100">
-//                 Sign-Up
-//               </button>
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Nav;
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
@@ -82,7 +30,7 @@ const Nav = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="MainNav">
-          <ul className="navbar-nav gap-2 m-0 ms-md-auto mt-5 mt-md-0 d-flex justify-content-center">
+          <ul className="navbar-nav gap-2 m-0 ms-md-auto mt-5 mt-md-0 d-flex justify-content-center align-items-center">
             {!currentUser && (
               <>
                 <li className="nav-item">
@@ -106,22 +54,23 @@ const Nav = () => {
 
             {currentUser && (
               <li className="d-flex">
-                <div className="btn-group w-100">
-                  <button
+                <div className="btn-group">
+                  <i
+                    className="bi bi-person-circle text-light fs-1"
                     type="button"
-                    className="btn btn-light rounded-pill px-4 w-100"
                     data-bs-toggle="dropdown"
-                  >
-                    <i className="bi bi-person-circle"></i> Account
-                  </button>
-                  <ul className="dropdown-menu dropdown-menu-end mt-2 w-100  position-absolute">
-                    <li className="py-1">
+                    aria-expanded="false"
+                  ></i>
+                  <ul className="dropdown-menu dropdown-menu-end mt-2">
+                    <li>
                       <Link to="/account" className="dropdown-item">
                         Account Settings
                       </Link>
                     </li>
-
-                    <li className="py-1">
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
                       <button className="dropdown-item" onClick={handleLogout}>
                         Logout
                       </button>

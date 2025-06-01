@@ -7,7 +7,7 @@ const ProfileManagement = () => {
     <>
       <Nav />
 
-      <div className="container-fluid bg-light">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12 col-md-6 p-4 p-md-4 ">
             {/* Profile Overview */}
@@ -80,7 +80,7 @@ const ProfileManagement = () => {
           <div className="col-sm-12 col-md-6 p-4 p-md-4">
             {/* Password Management */}
             <div className="container p-2 p-md-4 bg-white rounded-4 border d-flex justify-content-between align-items-center">
-              <div className="card text-start w-100  border-0 ">
+              <div className="card text-start w-100 border-0 ">
                 <div className="card-body">
                   <ul className="list-unstyled">
                     <li className="d-flex justify-content-between align-items-center">
@@ -94,7 +94,7 @@ const ProfileManagement = () => {
                       <h5>********</h5>
                     </li>
                     <li className="nav-item mt-2">
-                      <button className="btn btn-warning px-4 rounded-pill">
+                      <button className="btn btn-primary px-4 rounded-pill">
                         Change Password
                       </button>
                     </li>
