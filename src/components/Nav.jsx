@@ -1,68 +1,19 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import { signOut } from "firebase/auth";
-// import { auth } from "../utils/firebase";
-// import { AuthContext } from "../context/AuthContext";
-// import { useContext } from "react";
-
-// const Nav = () => {
-//   const { currentUser } = useContext(AuthContext);
-
-//   const handleLogout = async () => {
-//     try {
-//       await signOut(auth);
-//     } catch (error) {
-//       console.error("Logout failed:", error);
-//     }
-//   };
-
-//   return (
-//     <nav className="navbar navbar-dark bg-dark navbar-expand-md p-3">
-//       <div className="container p-2">
-//         <Link to="/" className="navbar-brand">
-//           <img src="/Logo-Dark.svg" alt="" height={"40px"} />
-//         </Link>
-//         <button
-//           className="navbar-toggler"
-//           data-bs-toggle="collapse"
-//           data-bs-target="#MainNav"
-//         >
-//           <span className="navbar-toggler-icon"></span>
-//         </button>
-//         <div className="collapse navbar-collapse" id="MainNav">
-//           <ul className="navbar-nav gap-2 m-0 ms-md-auto mt-5 mt-md-0 d-flex flex-column flex-md-row  ">
-//             <li className="nav-item">
-//               <button className="btn btn-outline-light px-4 rounded-pill border-2 w-100">
-//                 Sign-Up
-//               </button>
-//             </li>
-//             <li className="nav-item">
-//               <button className="btn btn-light px-4 rounded-pill w-100">
-//                 Sign-Up
-//               </button>
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Nav;
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Nav = () => {
+  // Navigation
+  const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
-
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
       console.error("Logout failed:", error);
     }

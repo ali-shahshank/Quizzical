@@ -13,8 +13,8 @@ import PasswordReset from "./components/PasswordReset";
 import QuizScreen from "./components/QuizScreen";
 import ResultsScreen from "./components/ResultsScreen";
 import ReviewScreen from "./components/ReviewScreen";
-import AccountManagement from "./components/AccountManagement";
 import { AuthProvider } from "./context/AuthContext";
+import AccountManagement from "./components/AccountManagement";
 const App = () => {
   return (
     <>

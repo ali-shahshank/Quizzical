@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../utils/firebase";
-import { Link } from "react-router-dom";
 import { googleProvider } from "../utils/firebase";
 import { signInWithPopup } from "firebase/auth";
 import Nav from "./Nav";
@@ -28,6 +27,7 @@ const SignUp = () => {
     hasNumber: false,
     hasSpecialChar: false,
   });
+  // Password Input & Validation
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   // input
   const handleInputChange = (e) => {
@@ -84,6 +84,7 @@ const SignUp = () => {
         email: "",
         password: "",
       });
+
       setIsTermsAccepted(false);
       setSuccessMessage("Account created successfully!");
       setTimeout(() => navigate("/"), 1500);
@@ -308,13 +309,17 @@ const SignUp = () => {
                   <label className="form-check-label" htmlFor="checkDefault">
                     <small>
                       By creating an account I agree to the
-                      <Link to="/terms&conditions" className="mx-1">
+                      <a
+                        href="/terms&conditions"
+                        target="_blank"
+                        className="mx-1"
+                      >
                         terms & conditions
-                      </Link>
+                      </a>
                       and
-                      <Link to="/privacy" className="mx-1">
+                      <a href="/privacy" target="_blank" className="mx-1">
                         privacy policy.
-                      </Link>
+                      </a>
                     </small>
                   </label>
                 </div>

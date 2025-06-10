@@ -23,8 +23,14 @@ const SignIn = () => {
         return "Email not registered";
       case "auth/wrong-password":
         return "Incorrect password";
+      case "auth/invalid-email":
+        return "Invalid email format";
       case "auth/too-many-requests":
-        return "Too many attempts. Try again later";
+        return "Account temporarily locked - try again later";
+      case "auth/network-request-failed":
+        return "Network error - check your connection";
+      case "auth/popup-closed-by-user":
+        return ""; // Silent handling for user-closed popup
       default:
         return "Login failed. Please try again";
     }
@@ -44,6 +50,7 @@ const SignIn = () => {
     // Input Validation
     if (!email || !password) {
       setErrorMessage("Please fill all fields");
+      setIsLoading(false); // Add this to prevent stuck loading state
       return;
     }
 
@@ -68,7 +75,7 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     setActiveAuthMethod("google");
     setIsLoading(true);
-    setErrorMessage("Unable to sign in with google");
+    setErrorMessage("");
 
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -103,24 +110,6 @@ const SignIn = () => {
     }
   };
 
-  // Error Message
-  {
-    errorMessage &&
-      (() => {
-        return (
-          <>
-            <div className="container-fluid">
-              <div className="container"></div>
-            </div>
-          </>
-        );
-      });
-  }
-  // Success Message
-  if (successMessage) {
-    return <></>;
-  }
-  // Loading State
   if (isLoading) {
     return (
       <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
@@ -146,15 +135,17 @@ const SignIn = () => {
             <div className="container p-2 p-md-4 "></div>
           </div>
           <div className="col-sm-12 col-md-4 p-4 d-none d-md-block ">
-            <div className="container p-2 "></div>
+            <div className="container p-2"></div>
           </div>
           <div className="col-sm-12 col-md-4 p-4 p-md-2">
             <div className="container p-4 bg-light rounded-4 border">
               <form action="" className="p-2">
                 <div className="container px-0 py-2">
                   <h5>Account Login</h5>
-                  <h6 className="text-muted">
-                    Please login to your existing account.
+                  <h6 className={errorMessage ? "text-danger" : "text-muted"}>
+                    {errorMessage ||
+                      successMessage ||
+                      "Please login to your existing account"}
                   </h6>
                 </div>
 
